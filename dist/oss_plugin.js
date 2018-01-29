@@ -52,14 +52,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(1);
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -119,6 +119,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        overwrite = _options$overwrite === undefined ? true : _options$overwrite,
 	        _options$basePathTran = options.basePathTransform,
 	        basePathTransform = _options$basePathTran === undefined ? _helpers.DEFAULT_TRANSFORM : _options$basePathTran,
+	        _options$transformFil = options.transformFilePath,
+	        transformFilePath = _options$transformFil === undefined ? _helpers.DEFAULT_TRANSFORM_FILE_PATH : _options$transformFil,
 	        _options$ossOptions = options.ossOptions,
 	        ossOptions = _options$ossOptions === undefined ? {} : _options$ossOptions,
 	        _options$ossUploadOpt = options.ossUploadOptions,
@@ -128,6 +130,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.uploadOptions = ossUploadOptions;
 	    this.isConnected = false;
 	    this.basePathTransform = basePathTransform;
+	    this.transformFilePath = transformFilePath;
 	    basePath = basePath ? (0, _helpers.addTrailingOSSSep)(basePath) : '';
 
 	    this.options = {
@@ -317,7 +320,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'uploadFile',
 	    value: function uploadFile(fileName, file) {
-	      var Key = this.options.basePath + fileName;
 	      var client = this.client;
 	      var fs = this.fs;
 	      var overwrite = this.options.overwrite;
@@ -325,100 +327,107 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _lodash2.default.isFunction(optionConfig) ? optionConfig(fileName, file) : optionConfig;
 	      });
 
-	      return (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
+	      return (0, _co2.default)( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+	        var Key;
 	        return regeneratorRuntime.wrap(function _callee$(_context) {
 	          while (1) {
 	            switch (_context.prev = _context.next) {
 	              case 0:
+	                _context.next = 2;
+	                return this.transformFilePath(this.options.basePath, fileName);
+
+	              case 2:
+	                Key = _context.sent;
+
 	                if (overwrite) {
-	                  _context.next = 10;
+	                  _context.next = 13;
 	                  break;
 	                }
 
-	                _context.prev = 1;
-	                _context.next = 4;
+	                _context.prev = 4;
+	                _context.next = 7;
 	                return client.head(Key);
 
-	              case 4:
+	              case 7:
 	                console.log('skipping upload of ' + file);
 	                return _context.abrupt('return');
 
-	              case 8:
-	                _context.prev = 8;
-	                _context.t0 = _context['catch'](1);
-
-	              case 10:
-	                _context.next = 12;
-	                return client.putStream(Key, fs.createReadStream(file), ossParams);
-
-	              case 12:
-	                return _context.abrupt('return', _context.sent);
+	              case 11:
+	                _context.prev = 11;
+	                _context.t0 = _context['catch'](4);
 
 	              case 13:
+	                _context.next = 15;
+	                return client.putStream(Key, fs.createReadStream(file), ossParams);
+
+	              case 15:
+	                return _context.abrupt('return', _context.sent);
+
+	              case 16:
 	              case 'end':
 	                return _context.stop();
 	            }
 	          }
-	        }, _callee, this, [[1, 8]]);
-	      }));
+	        }, _callee, this, [[4, 11]]);
+	      }).call(this));
 	    }
 	  }]);
 
 	  return OSSPlugin;
 	}();
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = require("http");
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = require("https");
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = require("path");
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = require("fs");
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_7__;
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.getDirectoryFilesRecursive = exports.translatePathFromFiles = exports.addSeperatorToPath = exports.addTrailingOSSSep = exports.DEFAULT_TRANSFORM = exports.OSS_PATH_SEP = exports.PATH_SEP = exports.REQUIRED_OSS_OPTS = exports.UPLOAD_IGNORES = undefined;
+	exports.getDirectoryFilesRecursive = exports.translatePathFromFiles = exports.addSeperatorToPath = exports.addTrailingOSSSep = exports.DEFAULT_TRANSFORM_FILE_PATH = exports.DEFAULT_TRANSFORM = exports.OSS_PATH_SEP = exports.PATH_SEP = exports.REQUIRED_OSS_OPTS = exports.UPLOAD_IGNORES = undefined;
 
 	var _lodash = __webpack_require__(6);
 
@@ -441,6 +450,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var OSS_PATH_SEP = exports.OSS_PATH_SEP = '/';
 	var DEFAULT_TRANSFORM = exports.DEFAULT_TRANSFORM = function DEFAULT_TRANSFORM(item) {
 	  return Promise.resolve(item);
+	};
+	var DEFAULT_TRANSFORM_FILE_PATH = exports.DEFAULT_TRANSFORM_FILE_PATH = function DEFAULT_TRANSFORM_FILE_PATH(a, b) {
+	  return Promise.resolve('' + a + b);
 	};
 
 	var addTrailingOSSSep = exports.addTrailingOSSSep = function addTrailingOSSSep(fPath) {
@@ -476,13 +488,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }).then(translatePathFromFiles(dir));
 	};
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_10__;
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;
