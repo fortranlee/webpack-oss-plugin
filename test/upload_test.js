@@ -180,6 +180,35 @@ describe('OSS Webpack Upload', function() {
     })
   });
 
+  describe('transformFilePath', function() {
+    it('can transform file path', function() {
+      var TRANS_PATH = 'TRANSFORM_FILE_PATH',
+        BASE_PATH = 'test';
+      var ossConfig = {
+        basePath: BASE_PATH,
+        transformFilePath(basePath, filePath) {
+          if (/\.js$/.test(filePath)) {
+            return Promise.resolve(path.join(basePath, TRANS_PATH, filePath))
+          } else {
+            return Promise.resolve(path.join(basePath, filePath))
+          }
+        }
+      };
+      var config = testHelpers.createWebpackConfig({ossConfig})
+
+      return testHelpers.runWebpackConfig({config})
+      .then(testForErrorsOrGetFileNames)
+      .then(fileNames => _.filter(fileNames, fileName => /\.js/.test(fileName)))
+      .then(([fileName]) => {
+        return Promise.all([
+          testHelpers.readFileFromOutputDir(fileName),
+          testHelpers.fetch(`${testHelpers.OSS_URL}${BASE_PATH}/${TRANS_PATH}/${fileName}`)
+        ])
+      })
+      .then(([localFile, remoteFile]) => assert.equal(remoteFile, localFile, 'file path transformed'))
+    });
+  });
+
   it('excludes files from `exclude` property', function() {
     testHelpers.createOutputPath();
 

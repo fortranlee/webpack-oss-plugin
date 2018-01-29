@@ -10,6 +10,7 @@ export const REQUIRED_OSS_OPTS = ['region', 'accessKeyId', 'accessKeySecret', 'b
 export const PATH_SEP = path.sep
 export const OSS_PATH_SEP = '/'
 export const DEFAULT_TRANSFORM = (item) => Promise.resolve(item)
+export const DEFAULT_TRANSFORM_FILE_PATH = (a, b) => Promise.resolve(`${a}${b}`)
 
 export const addTrailingOSSSep = fPath => {
   return fPath ? fPath.replace(/\/?(\?|#|$)/, '/$1') : fPath

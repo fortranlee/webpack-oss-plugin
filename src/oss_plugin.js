@@ -14,6 +14,7 @@ import {
   REQUIRED_OSS_OPTS,
   PATH_SEP,
   DEFAULT_TRANSFORM,
+  DEFAULT_TRANSFORM_FILE_PATH,
 } from './helpers'
 
 http.globalAgent.maxSockets = https.globalAgent.maxSockets = 50
@@ -31,6 +32,7 @@ module.exports = class OSSPlugin {
       directory,
       overwrite = true,
       basePathTransform = DEFAULT_TRANSFORM,
+      transformFilePath = DEFAULT_TRANSFORM_FILE_PATH,
       ossOptions = {},
       ossUploadOptions = {},
     } = options
@@ -38,6 +40,7 @@ module.exports = class OSSPlugin {
     this.uploadOptions = ossUploadOptions
     this.isConnected = false
     this.basePathTransform = basePathTransform
+    this.transformFilePath = transformFilePath
     basePath = basePath ? addTrailingOSSSep(basePath) : ''
 
     this.options = {
@@ -185,7 +188,6 @@ module.exports = class OSSPlugin {
   }
 
   uploadFile(fileName, file) {
-    const Key = this.options.basePath + fileName
     const client = this.client
     const fs = this.fs
     const overwrite = this.options.overwrite
@@ -194,6 +196,7 @@ module.exports = class OSSPlugin {
     })
 
     return co(function *() {
+      const Key = yield this.transformFilePath(this.options.basePath, fileName);
       if (!overwrite) {
         try {
           yield client.head(Key)
@@ -205,6 +208,6 @@ module.exports = class OSSPlugin {
       }
 
       return yield client.putStream(Key, fs.createReadStream(file), ossParams)
-    })
+    }.call(this))
   }
 }
