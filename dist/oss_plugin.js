@@ -339,36 +339,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	              case 2:
 	                Key = _context.sent;
 
-	                if (overwrite) {
-	                  _context.next = 13;
+	                if (Key) {
+	                  _context.next = 6;
 	                  break;
 	                }
 
-	                _context.prev = 4;
-	                _context.next = 7;
-	                return client.head(Key);
-
-	              case 7:
 	                console.log('skipping upload of ' + file);
 	                return _context.abrupt('return');
 
-	              case 11:
-	                _context.prev = 11;
-	                _context.t0 = _context['catch'](4);
+	              case 6:
+	                if (overwrite) {
+	                  _context.next = 16;
+	                  break;
+	                }
 
-	              case 13:
-	                _context.next = 15;
-	                return client.putStream(Key, fs.createReadStream(file), ossParams);
+	                _context.prev = 7;
+	                _context.next = 10;
+	                return client.head(Key);
 
-	              case 15:
-	                return _context.abrupt('return', _context.sent);
+	              case 10:
+	                console.log('skipping upload of ' + file);
+	                return _context.abrupt('return');
+
+	              case 14:
+	                _context.prev = 14;
+	                _context.t0 = _context['catch'](7);
 
 	              case 16:
+	                _context.next = 18;
+	                return client.putStream(Key, fs.createReadStream(file), ossParams);
+
+	              case 18:
+	                return _context.abrupt('return', _context.sent);
+
+	              case 19:
 	              case 'end':
 	                return _context.stop();
 	            }
 	          }
-	        }, _callee, this, [[4, 11]]);
+	        }, _callee, this, [[7, 14]]);
 	      }).call(this));
 	    }
 	  }]);

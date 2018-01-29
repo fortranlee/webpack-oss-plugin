@@ -196,7 +196,13 @@ module.exports = class OSSPlugin {
     })
 
     return co(function *() {
-      const Key = yield this.transformFilePath(this.options.basePath, fileName);
+      const Key = yield this.transformFilePath(this.options.basePath, fileName)
+
+      if (!Key) {
+        console.log(`skipping upload of ${file}`)
+        return
+      }
+
       if (!overwrite) {
         try {
           yield client.head(Key)
